@@ -26,5 +26,11 @@ module.exports = {
                    }
                }
         ]
-    }
+    },
+    resolve: {
+        extensions: [
+          '.ts',
+          '.js' // add this
+        ]
+      }
 }
