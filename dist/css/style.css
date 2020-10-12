@@ -142,12 +142,13 @@ body {
 .loader {
   margin: 5rem auto;
   text-align: center; }
-  .loader svg {
+  .loader img {
     height: 5.5rem;
     width: 5.5rem;
     fill: #F59A83;
     transform-origin: 44% 50%;
-    animation: rotate 1.5s infinite linear; }
+    animation: rotate 1.5s infinite linear; 
+    filter: invert(92%) sepia(11%) saturate(7157%) hue-rotate(304deg) brightness(102%) contrast(93%);  }
 
 @keyframes rotate {
   0% {
