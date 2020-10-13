@@ -46,10 +46,54 @@ const renderRecipe = el => {
 
 }
 
+const createButton = (page, type) => {
+  const button = `
+
+  <button class="btn-inline results__btn--${type}" data-goto="${type === "prev" ? page -1 : page + 1}">
+  <span>Page ${type === "prev" ? page -1 : page + 1}</span>
+  <svg class="search__icon">
+      <use href="img/icons.svg#icon-triangle-${type === "prev" ? 'left' : 'right'}"></use>
+  </svg>
+</button>
+  `
+
+    elements.resultPages.insertAdjacentHTML('afterbegin', button)
+}
+
+// function to render buttons 
+
+const renderButtons = (page, numResults,resPerPage) => {
+    const pages = Math.ceil(numResults/ resPerPage);
+    let button;
+
+    if(page === 1 && pages > 1) {
+        // only button next button 
+        button = createButton(page,'next')
+    }
+
+    else if(page === pages && pages > 1) {
+        // only button prev button 
+        button = createButton(page,'prev')
+    } else {
+        // use the both buttons
+        button = `
+        ${createButton(page,'prev')}
+         ${createButton(page,'next')}
+        `
+    }
+
+
+}
 // function to render the recipes result in the UI view
 
-export const renderRecipes = recipes => {
-   recipes.forEach(el => renderRecipe(el))
+export const renderRecipes = (recipes,page = 1, resPerPage = 10) => {
+    // render result of current page
+    const start = (page - 1) * resPerPage;
+    const end = page * resPerPage;
+   recipes.slice(start,end).forEach(el => renderRecipe(el))
+
+   // render pagination button 
+   renderButtons(page,recipes.length,resPerPage)
 }
 
 // clear search input 
@@ -58,3 +102,7 @@ export const clearInput = () => elements.searchInput.value = "";
 
 // clear search list 
 export const clearResults = () => elements.searchResultList.innerHTML = "";
+
+// clear pagination 
+export const clearPagination = () => elements.resultPages.innerHTML = "";
+

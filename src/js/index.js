@@ -29,10 +29,9 @@ const controlSearch = async () => {
         await state.search.getResults();
 
     // 4) rednder results on UI
-      //  searchView.renderRecipes(state.search.getResults())
-      // console.log(state.search.recipes[0].recipe.image)
+
       searchView.renderRecipes(state.search.recipes)
-      console.log(state.search.recipes)
+
       clearLoader(elements.searchRes)
     }
 
@@ -44,5 +43,16 @@ elements.searchForm.addEventListener('submit', (event) => {
     controlSearch();
 })
 
-console.log(elements.searchBtn)
+// add event listener to result page for pagination 
+
+elements.resultPages.addEventListener('click', e => {
+  const btn = e.target.closest('.btn-inline');
+  if(btn) {
+    const goToPage = parseInt(btn.dataset.goto,10);
+    searchView.clearResults();
+    searchView.clearPagination()
+    searchView.renderRecipes(state.search.recipes,goToPage)
+
+  }
+} )
 

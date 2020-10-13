@@ -11,7 +11,7 @@ export default class Search {
         const APP_ID  = "b7272e98"
         try {
             
-            const response = await axios(`${proxy}https://api.edamam.com/search?q=${this.query}&app_id=${APP_ID}&app_key=${APP_KEY}`)
+            const response = await axios(`${proxy}https://api.edamam.com/search?q=${this.query}&app_id=${APP_ID}&app_key=${APP_KEY}&to=30`)
     
             this.recipes = response.data.hits;
           
