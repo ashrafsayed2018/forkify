@@ -28,9 +28,11 @@ const limitRecipeTitle = (title, limit = 17) => {
 // function to render one recipe 
 
 const renderRecipe = el => {
+    const uri = el.recipe.uri.split('_');
+    const splitedUri = uri[1]
     const markup = `
     <li>
-        <a class="results__link" href="#">
+        <a class="results__link" href="#${splitedUri}">
             <figure class="results__fig">
                 <img src="${el.recipe.image}" alt="${el.recipe.label}">
             </figure>

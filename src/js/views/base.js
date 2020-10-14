@@ -3,7 +3,9 @@ export const elements = {
     searchInput : document.querySelector('.search__field'),
     searchRes : document.querySelector('.results'),
     searchResultList : document.querySelector('.results__list'),
-    resultPages : document.querySelector('.results__pages')
+    resultPages : document.querySelector('.results__pages'),
+    recipeCont : document.querySelector('.recipe'),
+    resultLink : document.querySelector('.results__link')
 }
 
 export const elementClass = {
