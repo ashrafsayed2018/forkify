@@ -4,8 +4,9 @@ export const elements = {
     searchRes : document.querySelector('.results'),
     searchResultList : document.querySelector('.results__list'),
     resultPages : document.querySelector('.results__pages'),
-    recipeCont : document.querySelector('.recipe'),
-    resultLink : document.querySelector('.results__link')
+    // recipeCont : document.querySelector('.recipe'),
+    resultLink : document.querySelector('.results__link'),
+    recipe : document.querySelector('.recipe')
 }
 
 export const elementClass = {

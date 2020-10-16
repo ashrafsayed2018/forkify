@@ -6,6 +6,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.11.5",
     "axios": "^0.20.0",
+    "fractional": "^1.0.0",
     "validator": "^13.1.17"
   },
   "devDependencies": {

@@ -7,7 +7,6 @@ export default class Recipe {
     constructor(id) {
         this.id = id;
     }
-
     // method to get recipe 
 
    async getRecipe() {
@@ -21,7 +20,7 @@ export default class Recipe {
             this.image = res.data.hits[0].recipe.image;
             this.url = res.data.hits[0].recipe.url;
             this.ingredients = res.data.hits[0].recipe.ingredients
-            console.log(res.data.hits[0].recipe)
+
             
           } catch(err) {
               console.log(err)
@@ -45,4 +44,76 @@ export default class Recipe {
     calcServings() {
         this.servings = 4 
     }
+    
+    // parsing the ingredients 
+
+    pareseIngredients() {
+        const unitsLong = ['tablespoons','tablespoon','ounces','ounce','cups','cup','teaspoons','teaspoon','pounds','pound'];
+        const unitsShort = ['tbsp','tbsp','oz','oz','cup','cup','tsp','tsp','pound','pound'];
+        const units = [...unitsShort,'kg','g']
+        const newIngredient = this.ingredients.map(el => {
+      
+         // uniform uinit
+         let ingredient = el.text.toLowerCase();
+         console.log(ingredient)
+
+         unitsLong.forEach((unit,i) => {
+             ingredient = ingredient.replace(unit,units[i])
+         })
+
+         // remove parantheses
+         ingredient.replace(/ *\([^)]*\) */g, ' ');
+
+         // parse ingredients into [ unit count ingredient ]
+             // converting the ingredient text to an array
+             const arrIng  = ingredient.split(' ');
+             // define the loaction of the unit like tbsp or cup or pound or oz
+             const unitIndex = arrIng.findIndex(element => units.includes(element))
+            // final object which will be returned;
+            let ingObj;
+             if(unitIndex > -1) {
+                 // there is unit
+                 // ex 4 1/2 cups arrCount is [4,1/2]
+                 // ex 7 cups arrCount is [7]
+                 const arrCount = arrIng.slice(0,unitIndex);
+                 let count;
+                 if(arrCount.length === 1) {
+                     count = eval(arrIng[0].replace("-","+"));
+                 } else {
+                     count = eval(arrIng.slice(0,unitIndex).join('+'))
+                 }
+                 ingObj = {
+                     count,
+                     unit : arrIng[unitIndex],
+                     ingredient : arrIng.slice(unitIndex + 1).join(' ')
+                 }
+             } else if (parseInt(arrIng[0])) {
+               // there is no unit but first element is number
+               ingObj = {
+                   count :parseInt(arrIng[0]),
+                   unit : '',
+                   ingredient : arrIng.slice(1).join(' ')
+               }
+             }
+             
+             else if (unitIndex === -1) {
+                 // there is no unit and no number in first position
+                 ingObj = {
+                     count : 1,
+                     unit : '',
+                     ingredient
+                 }
+             }
+
+            //  console.log(arrIng, ingredient)
+            //  console.log(ingObj)
+            return ingObj
+             
+        })
+        this.ingredients = newIngredient;
+        // console.log(newIngredient)
+    }
+
 }
+
+// #5c901aed161f02b38b3d360d7488d425

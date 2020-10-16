@@ -1,7 +1,8 @@
 // Global app controller
 import Search from "./models/Search"
 import Recipe from './models/Recipe';
-import * as searchView from "./views/searchView"
+import * as searchView from "./views/searchView";
+import * as recipeView from "./views/recipeView";
 import {elements, renderLoader, clearLoader, elementClass} from "./views/base"
 
 /* *  - the global state of the app 
@@ -17,7 +18,7 @@ const state = {}
 const controlSearch = async () => {
 
     // 1) get the query from the view 
-         const query = searchView.getInput() // TODO
+        const query = searchView.getInput() // TODO
          if(query) {
            // add new search object to the state 
            state.search = new Search(query)  
@@ -37,7 +38,7 @@ const controlSearch = async () => {
             clearLoader(elements.searchRes)
 
         } catch(err) {
-          alert(err)
+          console.log(err)
           clearLoader(elements.searchRes)
         }
     }
@@ -49,6 +50,7 @@ elements.searchForm.addEventListener('submit', (event) => {
    event.preventDefault();
     controlSearch();
 })
+
 
 // add event listener to result page for pagination 
 
@@ -76,14 +78,23 @@ const controlRecipe = async () => {
   if(id) {
     // prepare UI for changes 
 
+    recipeView.clearRecipe();
+
+   // hightlight the selected recipe 
+
+    if(state.search) searchView.highlightSelected(id)
+
+    renderLoader(elements.recipe)
+
     // create new recipe object
 
     state.recipe = new Recipe(id)
 
     try {
-      // get recipe data 
+      // get recipe data and parse ingredients
 
-      await state.recipe.getRecipe()
+      await state.recipe.getRecipe();
+      state.recipe.pareseIngredients();
 
       // calculate servings and time 
 
@@ -91,11 +102,17 @@ const controlRecipe = async () => {
       state.recipe.calcServings()
 
       // render the recipe 
+      clearLoader(elements.recipe)
+      recipeView.renderRecipe(state.recipe)
       console.log(state.recipe)
 
+
+
     } catch(err) {
-      alert ('error processing recipe')
+      console.log ('error processing recipe', err)
     }
+
+
 
   }
   
@@ -103,6 +120,7 @@ const controlRecipe = async () => {
 }
 // window.addEventListener('hashchange',controlRecipe)
 ['hashchange','load'].forEach(event =>  window.addEventListener(event,controlRecipe));
+
 
 
 
